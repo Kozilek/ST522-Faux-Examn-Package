@@ -1,0 +1,15 @@
+---
+title: "Examn"
+author: "Björn Eyríkur Helgason"
+date: "11. maj 2016"
+output: html_document
+---
+
+```{r}
+install.packages("devtools")
+library(devtools)
+
+install_github("Kozilek/ST22-Faux-Examn-Package")
+library("ST22examn")
+```
+
