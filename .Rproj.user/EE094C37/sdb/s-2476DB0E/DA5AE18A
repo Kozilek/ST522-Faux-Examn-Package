@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"README\"\nauthor: \"Björn Eyríkur Helgason\"\ndate: \"11. maj 2016\"\noutput: html_document\n---\n\nThis package does whatever you want. Use your imagination.\n",
+    "created" : 1462959814022.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4162442655",
+    "id" : "DA5AE18A",
+    "lastKnownWriteTime" : 1462959882,
+    "path" : "~/R/MyPackages/ST522examn/README.rmd",
+    "project_path" : "README.rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}
