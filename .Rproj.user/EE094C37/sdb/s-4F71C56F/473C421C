@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Throw Needles for Buffon\n#' @author Bjorn Helgason\n#' @keywords Buffon Buffon's needle throw\n#' @usage throw()\n#' @return Returns the amount of needles that hit a line\n#' @description Throw a needle and determine whether or not it lands on a line. If PI = TRUE, instead returns an estimate of pi.\n#' @param d The distance between lines\n#' @param l The length of the needles\n#' @param n The amount of needles thrown\n#' @param PI TRUE if the function should output an estimate of pi\n\nthrow <- function(l = 1, d = 1, n= 1, PI = FALSE) {\n  # Syntax Handling\n  if(l <= 0){\n    stop(\"Nonpositive needle length, l.\")\n  }\n  if(d <= 0){\n    stop(\"Nonpositive distance, d.\")\n  }\n  if(l > d){\n    stop(\"Needle length greater than line distance\")\n  }\n  if(length(n) != 1){\n    stop(\"Expected single value n\")\n  }\n  if(n <= 0){\n    stop(\"Nonpositive amount of needles thrown, n.\")\n  }\n  if(n != as.integer(n)){\n    stop(\"Noninteger amount of needles thrown, n.\")\n  }\n  if(!is.logical(PI)){\n    stop(\"Expected logical PI\")\n  }\n\n  # Function exectution\n  # To slightly reduce code, I treat needles as orientated, with head and point.\n  # Likewise, theta will be the counterclockwise angle, parallel to the lines.\n  count <- 0 # Start with no needles hit\n  pos <- as.array(runif(n, min = -d/2, max = d/2)) # Determine n distances from the needle head to the nearest line, with negative values being under the line\n  ang <- as.array(runif(n, min = 0, max = 2*pi)) # Determine n angles for the needles to hit\n  height <- apply(ang, 1, sin) * l # Compute the distance spanned by the needles\n  hits <- sum(abs(height + pos) > d, sign(pos) != sign(pos + height)) # Compute the number of hits\n  # Note: A needle will hit a line if the head and point distances have different signs, or if their sum exceeds teh distance between lines.\n  if(PI){\n    PIe <- (2*l/(d*(hits/n)))\n    return(PIe)\n  } else{\n    return(hits)\n  }\n\n}\n",
+    "created" : 1465308188724.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "492457668",
+    "id" : "473C421C",
+    "lastKnownWriteTime" : 1465388599,
+    "path" : "~/R/MyPackages/ST522examn/R/throw.R",
+    "project_path" : "R/throw.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

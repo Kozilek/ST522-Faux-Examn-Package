@@ -1,0 +1,17 @@
+{
+    "contents" : "Package: ST522examn\nType: Package\nTitle: ST522 Examn Project Package\nVersion: 0.1\nDate: 2016-06-10\nAuthor: Björn Eyríkur Helgason\nMaintainer: Unmaintained <bjhel14@student.sdu.dk>\nDescription: This package contains the functions used for the exam project of the the spring semester course ST522 at SDU, Denmark.\nLicense: Not actually licensed.\nLazyData: TRUE\nRoxygenNote: 5.0.1\n",
+    "created" : 1462959114389.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1097901870",
+    "id" : "696A1516",
+    "lastKnownWriteTime" : 1465486347,
+    "path" : "~/R/MyPackages/ST522examn/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "dcf"
+}

@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Chi Square Probability Function\n#' @author Bjorn Helgason\n#' @keywords Chi-squared probability estimation Monte Carlo\n#' @usage \\code{chi.probability(x, df = 1, n= 1000)}\n#' @return Returns an array with the probability that chi-square exceeds each given x\n#' @description This function estimates the probability that a chi-square dostribution exceeds x, using Monte Carlo simulation.\n#' @param x specifies the point of evaluation of the distribution function. If a vector, each point is evaluated.\n#' @param df specifies the degrees of freedom\n#' @param n specifies the amount of simulations used for the Monte Carlo estimation\n\nchi.probability <- function(x, df = 1, n= 1000) {\n  # Syntax Handling\n  if(!is.vector(x)){\n    stop(\"Expected vector 'x'\")\n  }\n  if(!is.numeric(x)){\n    stop(\"Expected numeric 'x'\")\n  }\n  if(df != as.integer(df)){\n    stop(\"Expected integer 'df'\")\n  }\n  if(n != as.integer(n)){\n    stop(\"Expected integer 'n'\")\n  }\n  if(df < 1){\n    stop(\"Expected positive 'df'\")\n  }\n  if(n < 1){\n    stop(\"Expected positive 'n'\")\n  }\n  if(length(n) != 1){\n    stop(\"Expected single length 'n'\")\n  }\n\n  # Function exectution\n  rval <- numeric(n) # Initialize the variable used for chi\n  for(i in 1:df){ # For each degree of freedom\n    vnorm <- rnorm(n) # Generate a normally distributed value\n    rval <- rval + vnorm^2 # And add its square to rval\n  }\n\n  chicdf <- ecdf(rval) # Compute the empirical cdf of rval\n  pvalues <- 1 - apply(as.array(x), 1, chicdf) # Apply the ecdf to each x\n\n  return(pvalues)\n\n\n}\n",
+    "created" : 1462959583376.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1334718721",
+    "id" : "CCF11BC5",
+    "lastKnownWriteTime" : 1465395128,
+    "path" : "~/R/MyPackages/ST522examn/R/chi.probability.r",
+    "project_path" : "R/chi.probability.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -2,8 +2,29 @@
 % Please edit documentation in R/chi.probability.r
 \name{chi.probability}
 \alias{chi.probability}
-\title{Title of Package}
+\title{Chi Square Probability Function}
 \usage{
-chi.probability(x, df = 1, n = 1)
+\code{chi.probability(x, df = 1, n= 1000)}
 }
+\arguments{
+\item{x}{specifies the point of evaluation of the distribution function. If a vector, each point is evaluated.}
+
+\item{df}{specifies the degrees of freedom}
+
+\item{n}{specifies the amount of simulations used for the Monte Carlo estimation}
+}
+\value{
+Returns an array with the probability that chi-square exceeds each given x
+}
+\description{
+This function estimates the probability that a chi-square dostribution exceeds x, using Monte Carlo simulation.
+}
+\author{
+Bjorn Helgason
+}
+\keyword{Carlo}
+\keyword{Chi-squared}
+\keyword{Monte}
+\keyword{estimation}
+\keyword{probability}
 

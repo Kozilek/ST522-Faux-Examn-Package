@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Kernel Desnity Estimate Plot\n#' @author Bjorn Helgason\n#' @keywords naive kernel density estimator plot\n#' @usage \\code{dense.plot(x, d, h, method = \"naive\")}\n#' @return No object is returned by this function\n#' @description Plots the estimated density of numeric variable 'x', using \\code{dense.estimator}.\n#' @param x a vector representing a numeric variable.\n#' @param d a vector specifying the points of evaluation. If left unspecified, evaluates at min, 1st quantile, median, mean, 3rd quantile and max of the numeric variable.\n#' @param h specifies the bandwith used for the estimation. Defaults to Sturges' rule for Naive method and Silverman's for Kernel method.\n#' @param method indicates whether teh naive method or the gaussian kernel is used for estimation.\n#' @param ... extra parameters to be passed to \\code{plot}.\n\ndense.plot <- function(x, n = 500, method = \"naive\", from, to, ...) {\n  # Syntax Handling\n  if(!is.vector(x)){\n    stop(\"Expected vector 'x'\")\n  }\n  if(!is.numeric(x)){\n    stop(\"Expected numeric 'x'\")\n  }\n  if(length(x) < 1){\n    stop(\"Empty x recieved\")\n  }\n  if(!(method == \"naive\" || method == \"kernel\")){\n    stop(\"Unrecognized method. Use 'naive' or 'kernel'.\")\n  }\n  if(!is.numeric(n)){\n    stop(\"Expected numeric 'n'\")\n  }\n  if(length(n) != 1){\n    stop(\"Expected single length 'n'\")\n  }\n  if(missing(from)){\n    from <- min(x) - sd(x)\n  }\n  if(missing(to)){\n    to <- max(x) + sd(x)\n  }\n  if(!is.numeric(from)){\n    stop(\"Expected numeric 'from'\")\n  }\n  if(length(from) != 1){\n    stop(\"Expected single length 'from'\")\n  }\n  if(!is.numeric(to)){\n    stop(\"Expected numeric 'to'\")\n  }\n  if(length(to) != 1){\n    stop(\"Expected single length 'to'\")\n  }\n  if(from >= to){\n    stop(\"Expected 'from' to be less than 'to'\")\n  }\n  #Function Execution\n  plot(seq(from = from, to = to, by = (to-from)/n), dense.estimator(x, seq(from = from, to = to, by = (to-from)/n), method = method), type = \"l\", ylab = \"Density\", xlab = deparse(substitute(x)),...)\n}\n",
+    "created" : 1465470939631.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3513130431",
+    "id" : "48F07671",
+    "lastKnownWriteTime" : 1465474166,
+    "path" : "~/R/MyPackages/ST522examn/R/dense.plot.r",
+    "project_path" : "R/dense.plot.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Regression with Matrices\n#' @author Bjorn Helgason\n#' @keywords matrix linear regression\n#' @usage \\code{linreg(formula)}\n#' @return Returns a list of residual standard error, r square, adjusted r square, f statistic, error degrees of freedom, model degrees of freedom, f p-value and the coefficent table.\n#' @description \\code{linreg} executes linear regression using matrix regression.\n#' @param formula an object of class \"formula\": a symbolic description of the model to be fitted.\n\nlinreg <- function(formula) {\n  # Syntax Handling\n  if(class(formula) != \"formula\"){\n    stop(\"Invalid formula recieved\")\n  }\n  form <- eval(formula, parent.frame()) # Grab the formula from the parent scope\n  mf <- model.frame(form) # Create a model frame from the formula\n  nvar <- dim(mf)[2] # Determine the amount of variables\n\n  # Function exectution\n  premat <- as.matrix(cbind(rep(1,dim(mf)[1]), mf[,2:nvar])) # Construct the design matrix\n  depmat <- as.matrix(mf[,1]) # Construct the response matrix\n  beta <- solve(t(premat) %*% premat) %*% (t(premat) %*% depmat) # Construct the beta matrix\n  dimnames(beta)[[1]][1] <- \"(intercept)\" # Name the intercept\n\n  Yhat <- premat %*% beta # compute estimated response matrix\n  Resid <- depmat - Yhat # compute residuals\n  ReSE <- sd(Resid)/sqrt(dim(Resid)[2]) # compute residual standard error\n\n  SSM <- sum((Yhat - mean(depmat))^2) # Compute SS accounted for by the model\n  SSE <- sum((depmat - Yhat)^2) # Compute SS not accounted for by the model\n  SST <- SSM + SSE # Compute total SS\n  dfm <- nvar - 1 # Compute degrees of freedom accounted for by the model\n  dfe <- dim(depmat)[1] - nvar# Not accounted for\n  dft <- dfe + dfm # Total\n  MSM <- SSM/dfm # Compute mean square of model\n  MSE <- SSE/dfe # Compute mean square of errors\n  MST <- SST/dft # Compute total mean square\n  Fs <- MSM/MSE # Compute F statistic\n  Rs <- SSM/SST # Compute regular old R-square\n  ARs <- 1 - MSE/MST # Compute Adjusted R-square\n  pval <- 1 - pf(Fs, dfm, dfe) # Compute p-value of Fs\n\n  SEcoef <- MSE * solve(t(premat)%*%premat)\n  SEcoef <- diag(SEcoef) # Computing St. Errors for the coefficients\n  SEcoef <- sqrt(SEcoef)\n\n  tcol <- beta/SEcoef # Compute t-values\n\n  pcol <- 2*pt(abs(tcol), df = dfe,lower.tail = FALSE)# Compute p-values\n\n  coeff <- cbind(beta, SEcoef, tcol, pcol)# Bind matrices for printing\n\n  # Printing results\n\n  dimnames(coeff)[[2]] <- c(\"Estimate\", \"Std. Error\", \"t-value\", \"Pr(>|t|)\")\n  cat(\"\\nCoefficients:\\n\")\n  print(coeff)\n  cat(\"\\nResiduals:\\n\")\n  cat(\"Residual standard error: \", ReSE ,\" on \", dfe ,\" degrees of freedom\\n\")\n  cat(\"Multiple R-squared:  \", Rs ,\",\", \"Adjusted R-squared:  \", ARs, \"\\n\")\n  cat(\"F-Statistic: \", Fs, \" on \", dfm ,\" and \", dfe, \"degrees of freedom, \", \"p-value:\", pval, \"\\n\")\n\n  invisible(list(ReSE = ReSE, Rs = Rs, ARs = ARs, Fs = Fs, dfe = dfe, dfm = dfm, fpval = pval, coefficients = coeff))\n\n\n}\n",
+    "created" : 1465406709208.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1007217600",
+    "id" : "4F14A1C6",
+    "lastKnownWriteTime" : 1465422112,
+    "path" : "~/R/MyPackages/ST522examn/R/linreg.R",
+    "project_path" : "R/linreg.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

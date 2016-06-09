@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Chi Square Goodness of Fit\n#' @author Bjorn Helgason\n#' @keywords Chi-squared Chi Square Goodness of Fit\n#' @usage \\code{chi.gof(x,p, mehtod = \"Monte Carlo\")}\n#' @return Returns the Chi Square Goodness of Fit value.\n#' @description This function performs a Chi Square Goodness of Fit test, estimating the p-value, using the function \\code{chi.probability}.\n#' @param x a vector containing the counts of the categorical variable.\n#' @param p specifies the expected probability of each outcome. If not specified, assumes uniform distribution.\n#' @param method indicates the method of computing the p-value. Use \\code{\"Monte Carlo\"} for a Monte Carlo simulation, using \\code{chi.probability}, or \\code{\"base\"} for the R base \\code{pchisq}.\n\nchi.gof <- function(x, p, method = \"Monte Carlo\") {\n  # Syntax Handling\n  if(!is.vector(x)){\n    stop(\"Expected vector 'x'\")\n  }\n  if(!is.numeric(x)){\n    stop(\"Expected numeric 'x'\")\n  }\n  if(length(x) < 1){\n    stop(\"Empty x recieved\")\n  }\n  if (any(x < 0) || anyNA(x)){\n    stop(\"Expected nonnegative and finite 'x' entries\")\n  }\n  if ((sum(x)) == 0){\n    stop(\"Expected at least one entry of 'x' to be positive\")\n  }\n  if(missing(p)){ # If p not specified, let it be uniform.\n    p = rep(1/length(x), length(x))\n  }\n  if(!is.numeric(p)){\n    stop(\"Expected numeric 'p'\")\n  }\n  if(length(p) != length(x)){\n    stop(\"Expected matching length of 'p' and 'x'\")\n  }\n  if(sum(p < 0) > 0){\n    stop(\"Expected positive probabilities in 'p'\")\n  }\n  if(sum(p)!=1){\n    stop(\"Expected total probability in 'p' equal to 1\")\n  }\n  if(!(method == \"Monte Carlo\" || method == \"base\")){\n    stop(\"Unrecognized method. Use 'Monte Carlo' or 'base'.\")\n  }\n  #Function Execution\n  n <- sum(x)\n  TStat <- sum((x - n*p)^2/(n*p)) # Compute the T statistic\n\n  if(method == \"Monte Carlo\"){\n    return(chi.probability(TStat, df = length(x)-1)) # Return the estimated p-value, using chi.probability\n  } else{\n    return(1-pchisq(TStat, df = length(x)-1)) # Return the estimated p-value, using pchisq\n  }\n\n\n}\n",
+    "created" : 1465389244063.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3510115824",
+    "id" : "FF532263",
+    "lastKnownWriteTime" : 1465394848,
+    "path" : "~/R/MyPackages/ST522examn/R/chi.gof.r",
+    "project_path" : "R/chi.gof.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

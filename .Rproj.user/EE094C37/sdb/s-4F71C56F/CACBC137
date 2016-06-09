@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Kernel Desnity Estimator\n#' @author Bjorn Helgason\n#' @keywords naive kernel density estimator\n#' @usage \\code{dense.estimator(x, d, h, method = \"naive\")}\n#' @return Returns the estimated density at points \\code{d}, or at min, 1st quantile, median, mean, 3rd quantile and max of the numeric variable, if unspecified.\n#' @description \\code{dense.estimator} estimates the density of a numeric variable, evaluated at a point.\n#' @param x a vector representing a numeric variable.\n#' @param d a vector specifying the points of evaluation. If left unspecified, evaluates at min, 1st quantile, median, mean, 3rd quantile and max of the numeric variable.\n#' @param h specifies the bandwith used for the estimation. Defaults to Sturges' rule for Naive method and Silverman's for Kernel method.\n#' @param method indicates whether teh naive method or the gaussian kernel is used for estimation.\n\ndense.estimator <- function(x, d, h, method = \"naive\") {\n  # Syntax Handling\n  if(!is.vector(x)){\n    stop(\"Expected vector 'x'\")\n  }\n  if(!is.numeric(x)){\n    stop(\"Expected numeric 'x'\")\n  }\n  if(length(x) < 1){\n    stop(\"Empty x recieved\")\n  }\n  minx <- min(x)\n  maxx <- max(x)\n  span <- maxx - minx\n  if(missing(d)){ # If d not specified, set the defualts\n    dDEF <- TRUE\n    d <- c(minx, minx + 0.25*span, minx + 0.5*span, mean(x), minx + 0.75*span, maxx)\n  } else{dDEF <- FALSE}\n  if(!is.vector(d)){\n    stop(\"Expected vector 'd'\")\n  }\n  if(!is.numeric(d)){\n    stop(\"Expected numeric 'd'\")\n  }\n  if(!(method == \"naive\" || method == \"kernel\")){\n    stop(\"Unrecognized method. Use 'naive' or 'kernel'.\")\n  }\n  if(missing(h)){\n    if(method == \"naive\"){\n      h <- span/(ceiling(log2(length(x))) + 1) # Use Sturges\n    }\n    if(method == \"kernel\"){\n      h <- sd(x) * (length(x)^(-(1/5))) # Use Silvermans formula\n    }\n  }\n  if(!is.numeric(h)){\n    stop(\"Expected numeric 'h'\")\n  }\n  if(length(h) != 1){\n    stop(\"Expected single length 'h'\")\n  }\n\n  #Function Execution\n  if(method == \"naive\"){ # Define the weight functions\n    K <- function(z){\n      return((0.5)*(abs(z) <= 1))\n    }\n  }else{\n   K <- function(z){\n      return((1/(sqrt(2*pi)))*exp((-1/2)*z^2))\n   }\n  }\n  pX <- function(z){\n    return((1/(length(x)*h))*sum(K((z - x)/h))) #  Then estimate density\n  }\n  out <- apply(as.array(d), 1, pX) # Apply the estimator function to all inputs d\n\n  cat(\"Bandwith =\", h,\"\\n\")\n  if(dDEF){\n    mout <- matrix(out, nrow = 6, dimnames = list(c(\"Min.:\", \"1st Qu.:\", \"Median:\", \"Mean:\", \"3rd Qu.:\", \"Max.:\"),c(\"y\")))\n    print(mout)\n    invisible(out)\n  }\n  else{\n    return(out)\n  }\n  }\n",
+    "created" : 1465465496457.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "486392365",
+    "id" : "CACBC137",
+    "lastKnownWriteTime" : 1465474630,
+    "path" : "~/R/MyPackages/ST522examn/R/dense.estimator.r",
+    "project_path" : "R/dense.estimator.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

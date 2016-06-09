@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Markov Chain Sationary Probability Estimator\n#' @author Bjorn Helgason\n#' @keywords markov chain stationary probability estimator\n#' @usage \\code{mcstation(p, k, n)}\n#' @return Returns a table of stationary probabilities.\n#' @description Estimates the stationary probabilities of a maarkov chain, using simulation.\n#' @param p a matrix containing transition probabilities.\n#' @param k an integer dictating the initial state of the chain.\n#' @param n an integer specifying the number of steps simulated\n\nmcstation <- function(p,k,n){\n  # Syntax Handling\n  if(!is.matrix(p)){\n    stop(\"Expected matrix 'p'\")\n  }\n  if(dim(p)[1] != dim(p)[2]){\n    stop(\"Expected square '2'\")\n  }\n  if(!is.numeric(p)){\n    stop(\"Expected numeric 'p'\")\n  }\n  if(any(p<0)){\n    stop(\"Probabilities must be positive\")\n  }\n  if(sum(p) != dim(p)[1]){\n    stop(\"Probabilities must sum to 1 for each row in 'p'\")\n  }\n  if(!is.numeric(k)){\n    stop(\"Expected numeric 'k'\")\n  }\n  if(length(k) != 1){\n    stop(\"Expected single length 'k'\")\n  }\n  if(k > dim(p)[1] || k < 1){\n    stop(\"Recieved invalid starting state 'k'\")\n  }\n  if(!is.numeric(n)){\n    stop(\"Expected numeric 'n'\")\n  }\n  if(length(n) != 1){\n    stop(\"Expected single length 'n'\")\n  }\n\n  # Function Execution\n  state <- k # recall the starting state\n  m <- dim(p)[1] # Determine the amount of states\n  count <- numeric(m) # Start a counting table\n  for(i in 1:n){ # n times\n    count[state] <- count[state] + 1 # Count up the current state\n    uvar <- runif(1) # Generate a random number from a uniform dist\n    j<-1 # Starting at the first state\n    while(uvar > sum(p[state,1:j]) && j < m){ # Determine if we move from the current state to j\n      j <- j+1\n    }\n    state <- j\n  }\n  return(matrix(count/n, nrow = 1, dimnames = list(c(\"Stationary Probability\"), seq(1:m))))\n\n}\n",
+    "created" : 1465478397266.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3764923207",
+    "id" : "996A9276",
+    "lastKnownWriteTime" : 1465486093,
+    "path" : "~/R/MyPackages/ST522examn/R/mcstation.R",
+    "project_path" : "R/mcstation.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

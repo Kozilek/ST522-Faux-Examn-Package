@@ -1,0 +1,18 @@
+{
+    "contents" : "#' @export\n#' @title Bivariate bootstrap estimator of correlation, standard error, bias and confidence interval.\n#' @author Bjorn Helgason\n#' @keywords bootstrap correlation bias standard error confidence interval\n#' @usage \\code{bootbivar(n, x, y)}\n#' @return Correlation, estimated correlation, standard error, bias and 95% confidence interval of variables x and y.\n#' @description Applying a simple bootstrap estimate, this function estimates the correlation of variables x and y, as well as standard error, bias and confidence interval.\n#' @param x a vector containing observations of the first variable\n#' @param y a vector containing observations of the second variable\n#' @param n The amount of bootstrap replications\n\nbootbivar <- function(n, x, y, print = TRUE) {\n  # Syntax Handling\n  if(length(x) != length(y)){\n    stop(\"Lengths of x and y don't match\")\n  }\n  if(n < 1){\n    stop(\"Nonpositive n.\")\n  }\n  if(n != as.integer(n)){\n    stop(\"Noninteger amount of bootstra samples, n.\")\n  }\n\n  # Function exectution\n\n  cor <- cor(x,y) # Computing the correlation\n  pair <- function(i){c(x[i], y[i])} # Create a function for pairing data from x and y\n  corlist <- numeric(n)\n  for(i in 1:n){\n    smp <- as.array(sample(1:length(x), length(x) , replace = TRUE)) # Generate a sample of indicies from the range of the data sets\n    plist<- apply(smp, 1, pair) # Pair the data from x and y, based on the sampled indicies.\n    corlist[i] <- cor(plist[2,],plist[1,]) # Compute the correlation of the sampled pairs.\n  }\n  estcor <- mean(corlist) # Estimate the correlation as the mean of the bootstrap samples\n  se <- sd(corlist)/sqrt(n) # Compute the standard error estimate of the estimated correlation\n  erMarg <- 1.96 * se # Compute the estimated margin of error for a 95% confidence interval\n  CI <- estcor + c(-erMarg, erMarg) # Estimate the confidence interval of the estimate of the correlation\n  bias <- estcor - cor(x,y) # Estimate the bias\n\n  if(print){\n    cat(\"Sample correlation =\", cor, \"\\n\\nEstimated correlation =\", estcor, \"\\n\\nEstimate standard error =\", se, \"\\n\\nEstimate 95% confidence interval:\\n\",CI, \"\\n\\nEstimated bias =\", bias)\n    invisible(list(cor = cor, estcor = estcor, se = se, CI = CI))\n  } else{return(list(cor = cor, estcor = estcor, se = se, CI = CI))}\n}\n",
+    "created" : 1465292918623.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2306268296",
+    "id" : "AE3B7C29",
+    "lastKnownWriteTime" : 1465396735,
+    "path" : "~/R/MyPackages/ST522examn/R/bootbivar.R",
+    "project_path" : "R/bootbivar.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
