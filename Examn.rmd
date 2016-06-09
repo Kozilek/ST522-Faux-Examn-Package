@@ -8,7 +8,7 @@ For this project, all functions are contained in the package ST522examn, avialab
 ```{r}
 if(!require("devtools")){
   install.packages("devtools", repos="http://cran.rstudio.com/");library(devtools)}
-#install_github("Kozilek/ST522-Faux-Examn-Package")
+install_github("Kozilek/ST522-Faux-Examn-Package")
 library(ST522examn)
 ```
 
